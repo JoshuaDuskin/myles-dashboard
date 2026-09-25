@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-25T00:04:04-05:00",
+  "myles": {
+    "version": "9.5.2",
+    "online": true
+  },
+  "current_task": null,
+  "queue_count": 0,
+  "last_completed": {
+    "id": "M83-20260924-233027-f5b12a",
+    "label": "Add the tools to your kit so you can look it up buddy",
+    "completed_at": "2026-09-24T23:32:11-05:00"
+  },
+  "last_failure": {
+    "id": "M83-20260924-211457-ab0c7c",
+    "label": "Build a Myles-only progress dashboard hosted under the JoshuaDuskin GitHub account. The dashboard must display real runtime state (current task, phase, elapsed time, worker status,",
+    "error": "RuntimeError: Execution bridge returned malformed JSON that could not be repaired.",
+    "failed_at": "2026-09-24T21:19:51-05:00"
+  }
+}

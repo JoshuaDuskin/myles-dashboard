@@ -1,417 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Myles Runtime Dashboard</title>
-    <style>
-        :root {
-            --bg-color: #f4f6f8;
-            --card-bg: #ffffff;
-            --text-primary: #1a202c;
-            --text-secondary: #718096;
-            --accent-color: #3182ce;
-            --success-color: #38a169;
-            --warning-color: #d69e2e;
-            --danger-color: #e53e3e;
-            --border-color: #e2e8f0;
-        }
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Myles Control Center</title>
+<style>
+:root{--bg:#0a0d14;--p:#141925;--p2:#1a2030;--line:#2a3346;--txt:#f5f7fb;--muted:#93a0b7;--a:#8b5cf6;--b:#22d3ee;--g:#2dd4bf;--w:#fbbf24;--r:#fb7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,rgba(139,92,246,.15),transparent 28%),var(--bg);color:var(--txt);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.side{padding:20px 14px;border-right:1px solid var(--line);background:rgba(10,13,20,.9);position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:11px;align-items:center;padding:7px 8px 22px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;font-weight:900}.brand h1{margin:0;font-size:18px}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+nav{display:grid;gap:5px}nav button{border:0;background:transparent;color:var(--muted);text-align:left;padding:11px;border-radius:10px}nav button.active,nav button:hover{background:var(--p2);color:var(--txt)}
+main{padding:28px 30px 48px;min-width:0}.top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:24px}.top h2{margin:0;font-size:27px}.top p{margin:6px 0 0;color:var(--muted)}.pill{border:1px solid var(--line);background:var(--p);padding:8px 11px;border-radius:999px;font-size:12px;color:var(--muted)}
+.view{display:none}.view.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:15px}.card{background:linear-gradient(180deg,var(--p2),var(--p));border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.25)}.s3{grid-column:span 3}.s4{grid-column:span 4}.s6{grid-column:span 6}.s8{grid-column:span 8}.s12{grid-column:span 12}.sub{color:var(--muted);font-size:12px;margin-bottom:14px}.metric{font-size:28px;font-weight:800}.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(42,51,70,.7)}.row:last-child{border-bottom:0}.label{color:var(--muted);font-size:13px}.value{font-size:13px;text-align:right}.badge{font-size:11px;border:1px solid var(--line);padding:5px 8px;border-radius:999px}.good{color:var(--g);border-color:rgba(45,212,191,.35)}.warn{color:var(--w);border-color:rgba(251,191,36,.35)}.bad{color:var(--r);border-color:rgba(251,113,133,.35)}
+.task{border:1px solid var(--line);border-radius:13px;padding:14px;background:#0f131d}.task b{display:block;margin-bottom:8px}.empty{border:1px dashed #35405a;border-radius:13px;padding:20px;text-align:center;color:var(--muted)}
+.btn{border:1px solid var(--line);background:var(--p2);color:var(--txt);padding:9px 12px;border-radius:10px}.btn.primary{border:0;background:linear-gradient(135deg,var(--a),#6667e8)}.tools{display:flex;gap:8px;flex-wrap:wrap}
+.notice{padding:13px;border-radius:12px;border:1px solid rgba(251,191,36,.3);background:rgba(251,191,36,.06);color:#e6d5a1;font-size:13px;line-height:1.45}.integration{display:flex;align-items:center;gap:11px}.ico{width:38px;height:38px;border-radius:11px;background:#222a3c;display:grid;place-items:center;font-weight:800}.integration .badge{margin-left:auto}
+.chat{height:390px;display:flex;flex-direction:column}.log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:9px}.bubble{max-width:82%;background:#20273a;border-radius:14px;padding:11px 13px;font-size:13px;line-height:1.45;white-space:pre-wrap}.bubble.me{align-self:flex-end;background:linear-gradient(135deg,#744ce6,#5665e8)}.compose{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:11px}.compose textarea{resize:none;border:1px solid var(--line);border-radius:12px;background:#0f131d;color:var(--txt);padding:11px;min-height:46px}
+@media(max-width:880px){.wrap{grid-template-columns:1fr}.side{height:auto;position:sticky;z-index:20;border-right:0;border-bottom:1px solid var(--line);padding:10px}.brand{padding-bottom:9px}.brand p{display:none}nav{display:flex;overflow:auto}nav button{white-space:nowrap}.s3,.s4,.s6,.s8{grid-column:span 12}main{padding:18px 14px}.chat{height:470px}}
+</style></head><body>
+<div class="wrap"><aside class="side"><div class="brand"><div class="logo">M</div><div><h1>Myles</h1><p>Owner control center</p></div></div>
+<nav><button class="active" data-v="overview">Overview</button><button data-v="work">Work</button><button data-v="trading">Trading Lab</button><button data-v="chat">Chat</button><button data-v="integrations">Integrations</button><button data-v="system">System</button></nav></aside>
+<main><header class="top"><div><h2 id="title">Overview</h2><p id="subtitle">Real Myles state, clearly explained.</p></div><div class="pill" id="feedPill">Feed: checking</div></header>
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 2rem;
-            line-height: 1.5;
-        }
+<section id="overview" class="view active"><div class="grid">
+<div class="card s3"><div class="sub">MYLES</div><div id="online" class="metric">—</div><div id="version" class="sub">—</div></div>
+<div class="card s3"><div class="sub">CURRENT WORK</div><div id="workState" class="metric">—</div><div id="phase" class="sub">—</div></div>
+<div class="card s3"><div class="sub">QUEUE</div><div id="queue" class="metric">—</div><div class="sub">waiting tasks</div></div>
+<div class="card s3"><div class="sub">UPDATED</div><div id="updated" class="metric" style="font-size:18px">—</div><div class="sub">sanitized feed</div></div>
+<div class="card s8"><h3>What Myles is doing</h3><div class="sub">No fake percentages or sample task IDs.</div><div id="current" class="empty">Waiting for status.json.</div></div>
+<div class="card s4"><h3>Recent outcome</h3><div class="row"><span class="label">Last completed</span><span id="completed" class="value">—</span></div><div class="row"><span class="label">Last failure</span><span id="failure" class="value">—</span></div></div>
+<div class="card s12"><h3>Quick access</h3><div class="tools"><button class="btn primary" data-go="chat">Talk to Myles</button><button class="btn" data-go="work">Current work</button><button class="btn" data-go="trading">Trading Lab</button><button class="btn" data-go="integrations">Integrations</button><button class="btn" onclick="loadStatus()">Refresh</button></div></div>
+</div></section>
 
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+<section id="work" class="view"><div class="grid"><div class="card s8"><h3>Current task</h3><div class="sub">Durable job state from Myles.</div><div id="workBox" class="empty">No feed.</div></div><div class="card s4"><h3>Execution</h3><div class="row"><span class="label">Worker</span><span id="worker" class="value">—</span></div><div class="row"><span class="label">Queue</span><span id="workQueue" class="value">—</span></div><div class="row"><span class="label">Verified progress</span><span id="verified" class="value">—</span></div></div></div></section>
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
+<section id="trading" class="view"><div class="grid"><div class="card s8"><h3>Trading Lab</h3><div class="sub">Bot, strategies and risk — without leaking private money data to a public page.</div><div class="notice">The public dashboard intentionally does not publish balances, positions, P&amp;L, orders, exchange keys or wallet data. The Trading Lab is ready for a future private authenticated feed and will not invent values.</div><div class="row"><span class="label">Trading bot feed</span><span class="badge warn">NOT CONNECTED</span></div><div class="row"><span class="label">Execution mode</span><span class="value">Private / unavailable here</span></div><div class="row"><span class="label">Strategies</span><span class="value">Private / unavailable here</span></div></div>
+<div class="card s4"><h3>Planned views</h3><div class="row"><span class="label">Bot status</span><span class="badge warn">Pending private feed</span></div><div class="row"><span class="label">Backtests</span><span class="badge warn">Pending</span></div><div class="row"><span class="label">Risk limits</span><span class="badge warn">Pending</span></div></div></div></section>
 
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-            color: var(--text-primary);
-        }
+<section id="chat" class="view"><div class="grid"><div class="card s8"><h3>Chat with Myles</h3><div class="sub">Works directly from the Windows tower after Myles v9.5.2 is installed.</div><div class="chat"><div id="chatLog" class="log"><div class="bubble">From your phone, keep using Telegram. This public page never stores a Telegram token.</div></div><div class="compose"><textarea id="chatText" placeholder="Ask Myles..."></textarea><button id="send" class="btn primary">Send</button></div></div></div><div class="card s4"><h3>Connection</h3><div class="row"><span class="label">Tower localhost</span><span id="localState" class="badge warn">Checking</span></div><div class="row"><span class="label">Remote phone</span><span class="badge good">TELEGRAM</span></div><div class="notice">An iPhone cannot reach the tower through 127.0.0.1. The dashboard says that honestly instead of pretending remote browser chat works.</div></div></div></section>
 
-        .refresh-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+<section id="integrations" class="view"><div class="grid">
+<div class="card s4"><div class="integration"><div class="ico">W</div><div><b>Public Web</b><div class="sub">search · fetch · browser</div></div><span class="badge good">BUILT IN</span></div></div>
+<div class="card s4"><div class="integration"><div class="ico">G</div><div><b>GitHub</b><div class="sub">JoshuaDuskin isolated identity</div></div><span class="badge good">CONNECTED</span></div></div>
+<div class="card s4"><div class="integration"><div class="ico">T</div><div><b>Telegram</b><div class="sub">remote chat / notifications</div></div><span class="badge good">CONNECTED</span></div></div>
+<div class="card s4"><div class="integration"><div class="ico">R</div><div><b>Ring</b><div class="sub">snapshot capability</div></div><span class="badge warn">NOT CONFIGURED</span></div></div>
+<div class="card s4"><div class="integration"><div class="ico">H</div><div><b>Health / Weight</b><div class="sub">private tracking</div></div><span class="badge warn">NOT CONFIGURED</span></div></div>
+<div class="card s4"><div class="integration"><div class="ico">⌂</div><div><b>Home</b><div class="sub">devices / routines</div></div><span class="badge warn">NOT CONFIGURED</span></div></div>
+</div></section>
 
-        .refresh-btn:hover {
-            background-color: #2b6cb0;
-        }
-
-        .refresh-btn:disabled {
-            background-color: var(--text-secondary);
-            cursor: not-allowed;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .card-title {
-            font-size: 0.875rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-        }
-
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-
-        .data-label {
-            color: var(--text-secondary);
-        }
-
-        .data-value {
-            font-weight: 500;
-            text-align: right;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.875rem;
-            font-weight: 600;
-        }
-
-        .status-running { background-color: #bee3f8; color: #2c5282; }
-        .status-idle { background-color: #e2e8f0; color: #4a5568; }
-        .status-error { background-color: #fed7d7; color: #c53030; }
-        .status-success { background-color: #c6f6d5; color: #276749; }
-
-        .progress-bar-container {
-            width: 100%;
-            height: 8px;
-            background-color: var(--border-color);
-            border-radius: 4px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background-color: var(--accent-color);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .log-container {
-            max-height: 200px;
-            overflow-y: auto;
-            font-family: "Consolas", "Monaco", monospace;
-            font-size: 0.85rem;
-            background-color: #f7fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 0.75rem;
-        }
-
-        .log-entry {
-            margin-bottom: 0.25rem;
-            border-bottom: 1px dashed #edf2f7;
-            padding-bottom: 0.25rem;
-        }
-
-        .timestamp {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            margin-right: 0.5rem;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-
-<div class="dashboard-container">
-    <header>
-        <h1>Myles Runtime Status</h1>
-        <button id="refreshBtn" class="refresh-btn" onclick="fetchStatus()">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-            </svg>
-            Refresh Status
-        </button>
-    </header>
-
-    <div class="grid">
-        <!-- Task Overview Card -->
-        <div class="card">
-            <div class="card-title">Current Task</div>
-            <div class="data-row">
-                <span class="data-label">Task ID</span>
-                <span class="data-value" id="taskId">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">State</span>
-                <span class="data-value" id="taskState">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">Phase</span>
-                <span class="data-value" id="taskPhase">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">Elapsed Time</span>
-                <span class="data-value" id="elapsedTime">0s</span>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar-fill" id="progressBar"></div>
-            </div>
-            <div class="data-row" style="margin-top: 0.5rem;">
-                <span class="data-label">Verified Progress</span>
-                <span class="data-value" id="verifiedProgress">-</span>
-            </div>
-        </div>
-
-        <!-- System Health Card -->
-        <div class="card">
-            <div class="card-title">System Health</div>
-            <div class="data-row">
-                <span class="data-label">Worker Status</span>
-                <span class="data-value" id="workerStatus">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">Queued Tasks</span>
-                <span class="data-value" id="queuedCount">0</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">Last Completed</span>
-                <span class="data-value" id="lastCompleted">-</span>
-            </div>
-            <div class="data-row">
-                <span class="data-label">System Status</span>
-                <span class="data-value status-badge" id="systemStatusBadge">-</span>
-            </div>
-        </div>
-
-        <!-- Errors & Logs Card -->
-        <div class="card">
-            <div class="card-title">Errors & Blockers</div>
-            <div class="data-row">
-                <span class="data-label">Last Failure/Blocker</span>
-                <span class="data-value" id="lastFailure">-</span>
-            </div>
-            <div style="margin-top: 1rem;">
-                <span class="data-label">Recent Operational Logs</span>
-                <div class="log-container" id="logContainer">
-                    <!-- Logs injected here -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+<section id="system" class="view"><div class="grid"><div class="card s6"><h3>Runtime</h3><div class="row"><span class="label">Version</span><span id="sysVersion" class="value">—</span></div><div class="row"><span class="label">Online</span><span id="sysOnline" class="value">—</span></div><div class="row"><span class="label">Status feed</span><span id="sysFeed" class="value">—</span></div></div><div class="card s6"><h3>Toolkit</h3><div class="row"><span class="label">Web</span><span class="value">search · fetch · download · browser</span></div><div class="row"><span class="label">Tower</span><span class="value">files · PowerShell · system</span></div><div class="row"><span class="label">Development</span><span class="value">Git · GitHub · packages · self-update</span></div><div class="row"><span class="label">Persistence</span><span class="value">local message/job history</span></div></div><div class="card s12"><div class="notice">PineTree remains outside Myles. This control center is for Myles and personal tooling only.</div></div></div></section>
+</main></div>
 <script>
-    /**
-     * Myles Dashboard Logic
-     * 
-     * This script fetches sanitized operational status from the local system status endpoint.
-     * It does not expose secrets, credentials, or private prompts.
-     */
-
-    // Configuration for polling
-    const POLL_INTERVAL_MS = 2000; // Poll every 2 seconds
-    let pollTimer = null;
-
-    /**
-     * Fetches the current runtime state from the local system status endpoint.
-     * In a real Myles environment, this would hit the internal API or file watcher.
-     * For this static dashboard, we simulate the fetch structure based on the instructions.
-     */
-    async function fetchStatus() {
-        const btn = document.getElementById('refreshBtn');
-        
-        // Simulate network delay for realism
-        btn.disabled = true;
-        btn.innerHTML = 'Loading...';
-
-        try {
-            // NOTE: In a real Myles deployment, this would be the actual endpoint.
-            // Since we are generating static content, we will simulate the data retrieval
-            // to demonstrate the UI logic without exposing secrets.
-            
-            const mockResponse = await getMockRuntimeState();
-            
-            updateDashboard(mockResponse);
-
-        } catch (error) {
-            console.error("Failed to fetch status:", error);
-            document.getElementById('lastFailure').innerText = "Connection to runtime state failed.";
-            document.getElementById('lastFailure').style.color = "#e53e3e";
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = `
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                </svg>
-                Refresh Status
-            `;
-        }
-    }
-
-    /**
-     * Generates a sanitized mock response structure representing the Myles runtime state.
-     * This ensures the UI works for demonstration without needing a live backend connection
-     * during the generation phase, while adhering to the "no secrets" rule.
-     */
-    function getMockRuntimeState() {
-        const now = new Date();
-        
-        // Simulating a realistic state transition
-        return {
-            task: {
-                id: `task_${Math.floor(Math.random() * 10000)}`,
-                name: "Data Processing Pipeline",
-                state: Math.random() > 0.8 ? "completed" : (Math.random() > 0.5 ? "running" : "idle"),
-                phase: ["queued", "fetching", "processing", "validating", "committing"][Math.floor(Math.random() * 5)],
-                elapsed_seconds: Math.floor(Math.random() * 300),
-                progress_percent: Math.floor(Math.random() * 100),
-                verified_progress: Math.floor(Math.random() * 100)
-            },
-            system: {
-                worker_status: "active", // sanitized status
-                queued_count: Math.floor(Math.random() * 50),
-                last_completed_task_id: `task_${Math.floor(Math.random() * 9999)}`,
-                system_status: "healthy" // sanitized operational status
-            },
-            errors: {
-                last_failure: null,
-                blocker: null
-            },
-            logs: [
-                { timestamp: now.getTime(), message: "System heartbeat check passed." },
-                { timestamp: now.getTime() - 1000, message: `Task ${Math.floor(Math.random()*100)} phase update.` }
-            ]
-        };
-    }
-
-    /**
-     * Updates the DOM elements with the new data.
-     */
-    function updateDashboard(data) {
-        // Task Section
-        const task = data.task;
-        document.getElementById('taskId').innerText = task.id;
-        
-        const stateEl = document.getElementById('taskState');
-        stateEl.innerText = task.state.toUpperCase();
-        stateEl.className = `data-value status-badge status-${task.state}`;
-
-        document.getElementById('taskPhase').innerText = task.phase;
-        
-        // Format elapsed time (e.g., 1m 30s)
-        const mins = Math.floor(task.elapsed_seconds / 60);
-        const secs = task.elapsed_seconds % 60;
-        document.getElementById('elapsedTime').innerText = `${mins}m ${secs}s`;
-
-        document.getElementById('progressBar').style.width = `${task.progress_percent}%`;
-        document.getElementById('verifiedProgress').innerText = `${task.verified_progress}%`;
-
-        // System Section
-        const sys = data.system;
-        document.getElementById('workerStatus').innerText = sys.worker_status.toUpperCase();
-        document.getElementById('queuedCount').innerText = sys.queued_count;
-        
-        const lastCompEl = document.getElementById('lastCompleted');
-        if (sys.last_completed_task_id) {
-            lastCompEl.innerText = `Task: ${sys.last_completed_task_id}`;
-            lastCompEl.style.color = "#2f855a"; // Greenish
-        } else {
-            lastCompEl.innerText = "-";
-        }
-
-        const statusBadge = document.getElementById('systemStatusBadge');
-        statusBadge.innerText = sys.system_status.toUpperCase();
-        statusBadge.className = `status-badge status-${sys.system_status}`;
-
-        // Errors Section
-        const err = data.errors;
-        const failureEl = document.getElementById('lastFailure');
-        if (err.last_failure) {
-            failureEl.innerText = err.last_failure;
-            failureEl.style.color = "#c53030";
-        } else {
-            failureEl.innerText = "-";
-            failureEl.style.color = "inherit";
-        }
-
-        // Logs Section
-        const logContainer = document.getElementById('logContainer');
-        logContainer.innerHTML = ''; // Clear existing
-        
-        // Add new logs (limit to last 10)
-        data.logs.slice(-10).forEach(log => {
-            const div = document.createElement('div');
-            div.className = 'log-entry';
-            
-            // Format timestamp relative to now
-            const timeDiff = log.timestamp - now.getTime();
-            let timeStr = "";
-            if (timeDiff < 0) {
-                timeStr = `+${Math.abs(timeDiff)}ms ago`;
-            } else {
-                timeStr = new Date(log.timestamp).toLocaleTimeString();
-            }
-
-            div.innerHTML = `<span class="timestamp">[${timeStr}]</span> ${log.message}`;
-            logContainer.appendChild(div);
-        });
-    }
-
-    // Initialize dashboard on load
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchStatus();
-        
-        // Start polling
-        pollTimer = setInterval(fetchStatus, POLL_INTERVAL_MS);
-    });
-
-</script>
-
-</body>
-</html>
+var API="http://127.0.0.1:8766", STATUS="status.json";
+var titles={overview:["Overview","Real Myles state, clearly explained."],work:["Work","Current jobs, worker state and verified progress."],trading:["Trading Lab","Trading bot workspace without public financial leakage."],chat:["Chat","Local tower web chat plus Telegram remotely."],integrations:["Integrations","Connected now versus planned later."],system:["System","Runtime and toolkit truth."]};
+function q(id){return document.getElementById(id)} function fmt(v){if(!v)return"—";var d=new Date(v);return isNaN(d)?String(v):d.toLocaleString()} function age(v){if(!v)return"—";var s=Math.max(0,(Date.now()-new Date(v).getTime())/1000);return s<60?Math.round(s)+"s ago":s<3600?Math.round(s/60)+"m ago":Math.round(s/3600)+"h ago"}
+function view(n){document.querySelectorAll(".view").forEach(function(x){x.classList.toggle("active",x.id===n)});document.querySelectorAll("nav button").forEach(function(x){x.classList.toggle("active",x.dataset.v===n)});q("title").textContent=titles[n][0];q("subtitle").textContent=titles[n][1]}
+document.querySelectorAll("[data-v]").forEach(function(b){b.onclick=function(){view(b.dataset.v)}});document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){view(b.dataset.go)}})
+function missing(){q("feedPill").textContent="Feed: not connected";q("online").textContent="Unknown";q("version").textContent="—";q("workState").textContent="Unknown";q("phase").textContent="No real feed";q("queue").textContent="—";q("updated").textContent="—";q("current").className="empty";q("current").textContent="No real runtime feed yet. Myles must publish status.json; this page will not invent values.";q("sysFeed").textContent="Not connected"}
+function render(d){q("feedPill").textContent="Feed: connected";q("online").textContent=d.myles&&d.myles.online?"Online":"Offline";q("version").textContent=d.myles&&d.myles.version?"v"+d.myles.version:"—";q("queue").textContent=d.queue_count==null?"—":d.queue_count;q("workQueue").textContent=d.queue_count==null?"—":d.queue_count;q("updated").textContent=age(d.generated_at);q("sysVersion").textContent=d.myles&&d.myles.version||"—";q("sysOnline").textContent=d.myles&&d.myles.online?"Yes":"No";q("sysFeed").textContent="Connected";
+var t=d.current_task;if(t){q("workState").textContent=t.state||"Running";q("phase").textContent=t.phase||"—";var h='<div class="task"><b>'+String(t.label||"Current task").replace(/[<>]/g,"")+'</b><div class="row"><span class="label">State</span><span class="value">'+(t.state||"—")+'</span></div><div class="row"><span class="label">Phase</span><span class="value">'+(t.phase||"—")+'</span></div><div class="row"><span class="label">Started</span><span class="value">'+fmt(t.started_at)+'</span></div></div>';q("current").className="";q("current").innerHTML=h;q("workBox").className="";q("workBox").innerHTML=h;q("worker").textContent=t.worker_alive?"Alive":"Not confirmed";q("verified").textContent=fmt(t.last_verified_progress_at)}else{q("workState").textContent="Idle";q("phase").textContent="No owner task";q("current").className="empty";q("current").textContent="Myles is online and no owner task is currently running.";q("workBox").className="empty";q("workBox").textContent="No active owner task.";q("worker").textContent="No active worker";q("verified").textContent="—"}
+q("completed").textContent=d.last_completed?(d.last_completed.label||d.last_completed.id):"—";q("failure").textContent=d.last_failure?(d.last_failure.error||d.last_failure.label):"None in feed"}
+async function loadStatus(){try{var r=await fetch(STATUS+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw 0;var d=await r.json();if(d.schema_version!==1)throw 0;render(d)}catch(e){missing()}}
+function bubble(t,me){var d=document.createElement("div");d.className="bubble"+(me?" me":"");d.textContent=t;q("chatLog").appendChild(d);q("chatLog").scrollTop=q("chatLog").scrollHeight}
+async function probe(){try{var r=await fetch(API+"/health",{cache:"no-store"});if(!r.ok)throw 0;q("localState").textContent="CONNECTED";q("localState").className="badge good"}catch(e){q("localState").textContent="TOWER ONLY / OFFLINE HERE";q("localState").className="badge warn"}}
+q("send").onclick=async function(){var t=q("chatText").value.trim();if(!t)return;q("chatText").value="";bubble(t,true);q("send").disabled=true;try{var r=await fetch(API+"/api/send",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t,source:"dashboard"})});if(!r.ok)throw 0;var d=await r.json();bubble(d.reply||"No reply returned.",false)}catch(e){bubble("This browser cannot reach the Windows tower. On your phone, use Telegram. On the tower, make sure Myles v9.5.2 is running.",false)}q("send").disabled=false}
+q("chatText").addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();q("send").click()}})
+loadStatus();probe();setInterval(loadStatus,20000);
+</script></body></html>
