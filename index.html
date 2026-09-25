@@ -1,66 +1,25 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Myles Control Center</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="0; url=https://joshuaduskin.github.io/MylesDashboard/">
+<title>Myles — Canonical Control Center</title>
 <style>
-:root{--bg:#0a0d14;--p:#141925;--p2:#1a2030;--line:#2a3346;--txt:#f5f7fb;--muted:#93a0b7;--a:#8b5cf6;--b:#22d3ee;--g:#2dd4bf;--w:#fbbf24;--r:#fb7185}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,rgba(139,92,246,.15),transparent 28%),var(--bg);color:var(--txt);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-.wrap{display:grid;grid-template-columns:240px 1fr;min-height:100vh}.side{padding:20px 14px;border-right:1px solid var(--line);background:rgba(10,13,20,.9);position:sticky;top:0;height:100vh}
-.brand{display:flex;gap:11px;align-items:center;padding:7px 8px 22px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;font-weight:900}.brand h1{margin:0;font-size:18px}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
-nav{display:grid;gap:5px}nav button{border:0;background:transparent;color:var(--muted);text-align:left;padding:11px;border-radius:10px}nav button.active,nav button:hover{background:var(--p2);color:var(--txt)}
-main{padding:28px 30px 48px;min-width:0}.top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:24px}.top h2{margin:0;font-size:27px}.top p{margin:6px 0 0;color:var(--muted)}.pill{border:1px solid var(--line);background:var(--p);padding:8px 11px;border-radius:999px;font-size:12px;color:var(--muted)}
-.view{display:none}.view.active{display:block}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:15px}.card{background:linear-gradient(180deg,var(--p2),var(--p));border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.25)}.s3{grid-column:span 3}.s4{grid-column:span 4}.s6{grid-column:span 6}.s8{grid-column:span 8}.s12{grid-column:span 12}.sub{color:var(--muted);font-size:12px;margin-bottom:14px}.metric{font-size:28px;font-weight:800}.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(42,51,70,.7)}.row:last-child{border-bottom:0}.label{color:var(--muted);font-size:13px}.value{font-size:13px;text-align:right}.badge{font-size:11px;border:1px solid var(--line);padding:5px 8px;border-radius:999px}.good{color:var(--g);border-color:rgba(45,212,191,.35)}.warn{color:var(--w);border-color:rgba(251,191,36,.35)}.bad{color:var(--r);border-color:rgba(251,113,133,.35)}
-.task{border:1px solid var(--line);border-radius:13px;padding:14px;background:#0f131d}.task b{display:block;margin-bottom:8px}.empty{border:1px dashed #35405a;border-radius:13px;padding:20px;text-align:center;color:var(--muted)}
-.btn{border:1px solid var(--line);background:var(--p2);color:var(--txt);padding:9px 12px;border-radius:10px}.btn.primary{border:0;background:linear-gradient(135deg,var(--a),#6667e8)}.tools{display:flex;gap:8px;flex-wrap:wrap}
-.notice{padding:13px;border-radius:12px;border:1px solid rgba(251,191,36,.3);background:rgba(251,191,36,.06);color:#e6d5a1;font-size:13px;line-height:1.45}.integration{display:flex;align-items:center;gap:11px}.ico{width:38px;height:38px;border-radius:11px;background:#222a3c;display:grid;place-items:center;font-weight:800}.integration .badge{margin-left:auto}
-.chat{height:390px;display:flex;flex-direction:column}.log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:9px}.bubble{max-width:82%;background:#20273a;border-radius:14px;padding:11px 13px;font-size:13px;line-height:1.45;white-space:pre-wrap}.bubble.me{align-self:flex-end;background:linear-gradient(135deg,#744ce6,#5665e8)}.compose{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:11px}.compose textarea{resize:none;border:1px solid var(--line);border-radius:12px;background:#0f131d;color:var(--txt);padding:11px;min-height:46px}
-@media(max-width:880px){.wrap{grid-template-columns:1fr}.side{height:auto;position:sticky;z-index:20;border-right:0;border-bottom:1px solid var(--line);padding:10px}.brand{padding-bottom:9px}.brand p{display:none}nav{display:flex;overflow:auto}nav button{white-space:nowrap}.s3,.s4,.s6,.s8{grid-column:span 12}main{padding:18px 14px}.chat{height:470px}}
-</style></head><body>
-<div class="wrap"><aside class="side"><div class="brand"><div class="logo">M</div><div><h1>Myles</h1><p>Owner control center</p></div></div>
-<nav><button class="active" data-v="overview">Overview</button><button data-v="work">Work</button><button data-v="trading">Trading Lab</button><button data-v="chat">Chat</button><button data-v="integrations">Integrations</button><button data-v="system">System</button></nav></aside>
-<main><header class="top"><div><h2 id="title">Overview</h2><p id="subtitle">Real Myles state, clearly explained.</p></div><div class="pill" id="feedPill">Feed: checking</div></header>
-
-<section id="overview" class="view active"><div class="grid">
-<div class="card s3"><div class="sub">MYLES</div><div id="online" class="metric">—</div><div id="version" class="sub">—</div></div>
-<div class="card s3"><div class="sub">CURRENT WORK</div><div id="workState" class="metric">—</div><div id="phase" class="sub">—</div></div>
-<div class="card s3"><div class="sub">QUEUE</div><div id="queue" class="metric">—</div><div class="sub">waiting tasks</div></div>
-<div class="card s3"><div class="sub">UPDATED</div><div id="updated" class="metric" style="font-size:18px">—</div><div class="sub">sanitized feed</div></div>
-<div class="card s8"><h3>What Myles is doing</h3><div class="sub">No fake percentages or sample task IDs.</div><div id="current" class="empty">Waiting for status.json.</div></div>
-<div class="card s4"><h3>Recent outcome</h3><div class="row"><span class="label">Last completed</span><span id="completed" class="value">—</span></div><div class="row"><span class="label">Last failure</span><span id="failure" class="value">—</span></div></div>
-<div class="card s12"><h3>Quick access</h3><div class="tools"><button class="btn primary" data-go="chat">Talk to Myles</button><button class="btn" data-go="work">Current work</button><button class="btn" data-go="trading">Trading Lab</button><button class="btn" data-go="integrations">Integrations</button><button class="btn" onclick="loadStatus()">Refresh</button></div></div>
-</div></section>
-
-<section id="work" class="view"><div class="grid"><div class="card s8"><h3>Current task</h3><div class="sub">Durable job state from Myles.</div><div id="workBox" class="empty">No feed.</div></div><div class="card s4"><h3>Execution</h3><div class="row"><span class="label">Worker</span><span id="worker" class="value">—</span></div><div class="row"><span class="label">Queue</span><span id="workQueue" class="value">—</span></div><div class="row"><span class="label">Verified progress</span><span id="verified" class="value">—</span></div></div></div></section>
-
-<section id="trading" class="view"><div class="grid"><div class="card s8"><h3>Trading Lab</h3><div class="sub">Bot, strategies and risk — without leaking private money data to a public page.</div><div class="notice">The public dashboard intentionally does not publish balances, positions, P&amp;L, orders, exchange keys or wallet data. The Trading Lab is ready for a future private authenticated feed and will not invent values.</div><div class="row"><span class="label">Trading bot feed</span><span class="badge warn">NOT CONNECTED</span></div><div class="row"><span class="label">Execution mode</span><span class="value">Private / unavailable here</span></div><div class="row"><span class="label">Strategies</span><span class="value">Private / unavailable here</span></div></div>
-<div class="card s4"><h3>Planned views</h3><div class="row"><span class="label">Bot status</span><span class="badge warn">Pending private feed</span></div><div class="row"><span class="label">Backtests</span><span class="badge warn">Pending</span></div><div class="row"><span class="label">Risk limits</span><span class="badge warn">Pending</span></div></div></div></section>
-
-<section id="chat" class="view"><div class="grid"><div class="card s8"><h3>Chat with Myles</h3><div class="sub">Works directly from the Windows tower after Myles v9.5.2 is installed.</div><div class="chat"><div id="chatLog" class="log"><div class="bubble">From your phone, keep using Telegram. This public page never stores a Telegram token.</div></div><div class="compose"><textarea id="chatText" placeholder="Ask Myles..."></textarea><button id="send" class="btn primary">Send</button></div></div></div><div class="card s4"><h3>Connection</h3><div class="row"><span class="label">Tower localhost</span><span id="localState" class="badge warn">Checking</span></div><div class="row"><span class="label">Remote phone</span><span class="badge good">TELEGRAM</span></div><div class="notice">An iPhone cannot reach the tower through 127.0.0.1. The dashboard says that honestly instead of pretending remote browser chat works.</div></div></div></section>
-
-<section id="integrations" class="view"><div class="grid">
-<div class="card s4"><div class="integration"><div class="ico">W</div><div><b>Public Web</b><div class="sub">search · fetch · browser</div></div><span class="badge good">BUILT IN</span></div></div>
-<div class="card s4"><div class="integration"><div class="ico">G</div><div><b>GitHub</b><div class="sub">JoshuaDuskin isolated identity</div></div><span class="badge good">CONNECTED</span></div></div>
-<div class="card s4"><div class="integration"><div class="ico">T</div><div><b>Telegram</b><div class="sub">remote chat / notifications</div></div><span class="badge good">CONNECTED</span></div></div>
-<div class="card s4"><div class="integration"><div class="ico">R</div><div><b>Ring</b><div class="sub">snapshot capability</div></div><span class="badge warn">NOT CONFIGURED</span></div></div>
-<div class="card s4"><div class="integration"><div class="ico">H</div><div><b>Health / Weight</b><div class="sub">private tracking</div></div><span class="badge warn">NOT CONFIGURED</span></div></div>
-<div class="card s4"><div class="integration"><div class="ico">⌂</div><div><b>Home</b><div class="sub">devices / routines</div></div><span class="badge warn">NOT CONFIGURED</span></div></div>
-</div></section>
-
-<section id="system" class="view"><div class="grid"><div class="card s6"><h3>Runtime</h3><div class="row"><span class="label">Version</span><span id="sysVersion" class="value">—</span></div><div class="row"><span class="label">Online</span><span id="sysOnline" class="value">—</span></div><div class="row"><span class="label">Status feed</span><span id="sysFeed" class="value">—</span></div></div><div class="card s6"><h3>Toolkit</h3><div class="row"><span class="label">Web</span><span class="value">search · fetch · download · browser</span></div><div class="row"><span class="label">Tower</span><span class="value">files · PowerShell · system</span></div><div class="row"><span class="label">Development</span><span class="value">Git · GitHub · packages · self-update</span></div><div class="row"><span class="label">Persistence</span><span class="value">local message/job history</span></div></div><div class="card s12"><div class="notice">PineTree remains outside Myles. This control center is for Myles and personal tooling only.</div></div></div></section>
-</main></div>
-<script>
-var API="http://127.0.0.1:8766", STATUS="status.json";
-var titles={overview:["Overview","Real Myles state, clearly explained."],work:["Work","Current jobs, worker state and verified progress."],trading:["Trading Lab","Trading bot workspace without public financial leakage."],chat:["Chat","Local tower web chat plus Telegram remotely."],integrations:["Integrations","Connected now versus planned later."],system:["System","Runtime and toolkit truth."]};
-function q(id){return document.getElementById(id)} function fmt(v){if(!v)return"—";var d=new Date(v);return isNaN(d)?String(v):d.toLocaleString()} function age(v){if(!v)return"—";var s=Math.max(0,(Date.now()-new Date(v).getTime())/1000);return s<60?Math.round(s)+"s ago":s<3600?Math.round(s/60)+"m ago":Math.round(s/3600)+"h ago"}
-function view(n){document.querySelectorAll(".view").forEach(function(x){x.classList.toggle("active",x.id===n)});document.querySelectorAll("nav button").forEach(function(x){x.classList.toggle("active",x.dataset.v===n)});q("title").textContent=titles[n][0];q("subtitle").textContent=titles[n][1]}
-document.querySelectorAll("[data-v]").forEach(function(b){b.onclick=function(){view(b.dataset.v)}});document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){view(b.dataset.go)}})
-function missing(){q("feedPill").textContent="Feed: not connected";q("online").textContent="Unknown";q("version").textContent="—";q("workState").textContent="Unknown";q("phase").textContent="No real feed";q("queue").textContent="—";q("updated").textContent="—";q("current").className="empty";q("current").textContent="No real runtime feed yet. Myles must publish status.json; this page will not invent values.";q("sysFeed").textContent="Not connected"}
-function render(d){q("feedPill").textContent="Feed: connected";q("online").textContent=d.myles&&d.myles.online?"Online":"Offline";q("version").textContent=d.myles&&d.myles.version?"v"+d.myles.version:"—";q("queue").textContent=d.queue_count==null?"—":d.queue_count;q("workQueue").textContent=d.queue_count==null?"—":d.queue_count;q("updated").textContent=age(d.generated_at);q("sysVersion").textContent=d.myles&&d.myles.version||"—";q("sysOnline").textContent=d.myles&&d.myles.online?"Yes":"No";q("sysFeed").textContent="Connected";
-var t=d.current_task;if(t){q("workState").textContent=t.state||"Running";q("phase").textContent=t.phase||"—";var h='<div class="task"><b>'+String(t.label||"Current task").replace(/[<>]/g,"")+'</b><div class="row"><span class="label">State</span><span class="value">'+(t.state||"—")+'</span></div><div class="row"><span class="label">Phase</span><span class="value">'+(t.phase||"—")+'</span></div><div class="row"><span class="label">Started</span><span class="value">'+fmt(t.started_at)+'</span></div></div>';q("current").className="";q("current").innerHTML=h;q("workBox").className="";q("workBox").innerHTML=h;q("worker").textContent=t.worker_alive?"Alive":"Not confirmed";q("verified").textContent=fmt(t.last_verified_progress_at)}else{q("workState").textContent="Idle";q("phase").textContent="No owner task";q("current").className="empty";q("current").textContent="Myles is online and no owner task is currently running.";q("workBox").className="empty";q("workBox").textContent="No active owner task.";q("worker").textContent="No active worker";q("verified").textContent="—"}
-q("completed").textContent=d.last_completed?(d.last_completed.label||d.last_completed.id):"—";q("failure").textContent=d.last_failure?(d.last_failure.error||d.last_failure.label):"None in feed"}
-async function loadStatus(){try{var r=await fetch(STATUS+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw 0;var d=await r.json();if(d.schema_version!==1)throw 0;render(d)}catch(e){missing()}}
-function bubble(t,me){var d=document.createElement("div");d.className="bubble"+(me?" me":"");d.textContent=t;q("chatLog").appendChild(d);q("chatLog").scrollTop=q("chatLog").scrollHeight}
-async function probe(){try{var r=await fetch(API+"/health",{cache:"no-store"});if(!r.ok)throw 0;q("localState").textContent="CONNECTED";q("localState").className="badge good"}catch(e){q("localState").textContent="TOWER ONLY / OFFLINE HERE";q("localState").className="badge warn"}}
-q("send").onclick=async function(){var t=q("chatText").value.trim();if(!t)return;q("chatText").value="";bubble(t,true);q("send").disabled=true;try{var r=await fetch(API+"/api/send",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t,source:"dashboard"})});if(!r.ok)throw 0;var d=await r.json();bubble(d.reply||"No reply returned.",false)}catch(e){bubble("This browser cannot reach the Windows tower. On your phone, use Telegram. On the tower, make sure Myles v9.5.2 is running.",false)}q("send").disabled=false}
-q("chatText").addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();q("send").click()}})
-loadStatus();probe();setInterval(loadStatus,20000);
-</script></body></html>
+html,body{margin:0;min-height:100%;background:#070b14;color:#eef3ff;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{min-height:100vh;display:grid;place-items:center;padding:24px}
+.card{max-width:620px;border:1px solid #1b2740;border-radius:20px;padding:28px;background:#0b1220}
+h1{margin:0 0 10px;font-size:28px}
+p{color:#93a2ba;line-height:1.55}
+a{color:#8fdcff}
+</style>
+</head>
+<body>
+<main><div class="card">
+<h1>This legacy Myles dashboard is retired.</h1>
+<p>Myles now has one canonical Owner Control Center. Redirecting now.</p>
+<p><a href="https://joshuaduskin.github.io/MylesDashboard/">Open the canonical Myles Control Center</a></p>
+</div></main>
+<script>location.replace("https://joshuaduskin.github.io/MylesDashboard/");</script>
+</body>
+</html>
